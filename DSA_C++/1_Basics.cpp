@@ -7,7 +7,7 @@ int main(){                      //* The execution of program starts from main f
 
     cout<< "HELLO BUNNY";        //* cout is used to display output of the program 
                                             //* This "<<" is known as insertion operator 
-    std:: cout << "Have a nice Day !!";     // Second way, Use this if we dont write 4th line ..
+    std:: cout << " Have a nice Day !!";     // Second way, Use this if we dont write 4th line ..
 
     return 0;                    //* Termination .. Exit of main function 
 }
