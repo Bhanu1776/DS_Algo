@@ -1,6 +1,7 @@
 #include <iostream>
 using namespace std;
 
+//* Structure of a node ..
 class node{
     public:
     int data;
@@ -23,7 +24,7 @@ void InsertAtTail(node* &head, int val){        // Call by reference .. thats wh
         return;
     }
 
-    node* temp=head;                // "temp" is the last node       
+    node* temp=head;                // Temp variable is used to traverse through linked list .. head is assigned to temp bcoz head is the first node and to traverse we have to start from 1st node ..
 
     while(temp->next!=NULL){        // We'll traverse untill the next node becomes NULL
         temp=temp->next;            // To traverse through the linked list 
@@ -70,7 +71,7 @@ void deleteAtHead(node* &head){
     delete todelete;
 }
 
-//* To display the linked list ..
+//* To display the linked list ..    
 
 void display(node* head){       // Call by value .. Coz we are not modifiying any node to display ..
 
