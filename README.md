@@ -1,7 +1,7 @@
-# Data Strucutes & Algorithm
+# Data Structures & Algorithm
 
 ## Hello, I'm Learning Data Structures and Algorithm in C++ From Scratch.
-Personally written Notes in source code ..
+Added comments line by line for better understanding of code ..
 
 Here are the resources: <br>
 Youtube: https://www.youtube.com/playlist?list=PLfqMhTWNBTe0b2nM6JHVCnAkhQRGiZMSJ <br>
