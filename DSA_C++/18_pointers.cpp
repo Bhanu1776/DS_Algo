@@ -61,6 +61,27 @@ int main(){
     // We cannot overwrite any address defined in symbol table
     // To know more about symbol table refer this video ==> https://youtu.be/rlpw7oi-bpE?t=1800
     
+
+    //* Reference variable
+    // Assigning another name to the same variable, i.e now at single block of memeory will represent by two names
+    //? Where we use ==> We use reference variable to in functions to pass by reference
+
+    int bhanu = 7;
+    int &bunny = bhanu;         // Now this variable called bunny will also point to bhanu memory address
+
+    cout<<bhanu<<endl;
+    bunny++;                    
+    cout<<bhanu<<endl;          // Now the output of the bhanu variable will be 8;
+
+    // Return by reference ==> A function that can also return the reference values of its own function ==> int& update(int n) -syntax
+    // Not at all recommended! -- It will throw warning in terminal
+    // In the same way we can also return pointer function ==> int* update(int n) -- Although not at all recommended 
+
+
+    //* Difference between Pass by Value and Pass by Reference
+    //? Pass by value ==> It creates the copy of the variable 
+    //? Pass by reference ==> Creates a new variable wich points to the original variable address
+
     
     //* Call by reference (pointers in Functions)
 
@@ -69,8 +90,6 @@ int main(){
 
     swap(&c,&d);            // Sending the address of c and d to swap function ..
     cout<<a<<" "<<b<<endl;
-
-    
 
     return 0;
 }
@@ -81,4 +100,12 @@ void swap(int *c, int *d){      // Accessing Global variables in pointers
     temp=*c;
     *c=*d;
     *d=temp;
+}
+
+void swap2(int &c, int &d){      // Another way of passing original variable i.e using reference variable
+    int temp;
+    
+    temp=c;
+    c=d;
+    d=temp;
 }
