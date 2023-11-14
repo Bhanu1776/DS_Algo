@@ -2,24 +2,16 @@
 #include <cmath>
 using namespace std;
 
-//? Amstrong Number
+//? Print all Divisors
 
 int main(){
 
-  int n = 371;
-  int copy = n;
-  int count = int(log10(n)+1);
-  int amstrongNum = 0;
-
-  while(n>0){
-    int lastDigit = n%10;
-    amstrongNum = amstrongNum + pow(lastDigit, count);
-    n=n/10;
+  int n=36;
+  for(int i =1; i<=n; i++){
+    if(n%i==0){
+      cout<<i<<endl;
+    }
   }
-  if(amstrongNum == copy)
-    cout<<"Yes Amstrong";
-  else
-    cout<<" Not an Amstrong Number";
 
   return 0;
 }
