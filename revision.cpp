@@ -2,24 +2,24 @@
 #include <cmath>
 using namespace std;
 
-//? Palindrome
+//? Amstrong Number
 
 int main(){
 
-  int n = 7667;
-  int duplicate = n;
-  int revNum = 0;
+  int n = 371;
+  int copy = n;
+  int count = int(log10(n)+1);
+  int amstrongNum = 0;
 
   while(n>0){
     int lastDigit = n%10;
-    revNum = (revNum * 10) + lastDigit;
-    n = n/10;
+    amstrongNum = amstrongNum + pow(lastDigit, count);
+    n=n/10;
   }
-
-  if(duplicate == revNum)
-    cout<<"Palindrome";
+  if(amstrongNum == copy)
+    cout<<"Yes Amstrong";
   else
-    cout<<"Not Palindrome";
+    cout<<" Not an Amstrong Number";
 
   return 0;
 }
