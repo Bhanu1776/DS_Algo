@@ -2,16 +2,18 @@
 #include <cmath>
 using namespace std;
 
-//? Print all Divisors
+//? GCD = Greatest common divisor
 
 int main(){
 
-  int n=36;
-  for(int i =1; i<=n; i++){
-    if(n%i==0){
-      cout<<i<<endl;
-    }
+  int a =52, b = 10;
+
+  while(a>0 && b>0){
+    if(a>b) a=a%b;
+    else    b=b%a;
   }
+  if(a==0)  cout<<b;
+  else      cout<<a;
 
   return 0;
 }
