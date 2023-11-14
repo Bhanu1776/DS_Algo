@@ -2,22 +2,17 @@
 #include <cmath>
 using namespace std;
 
-//? Count the digits
+//? Reverse the number
 
 int main(){
 
-  //* Approach one
   int n = 7789;
-  int count = 0;
+  int revNum = 0;
   while(n>0){
-    count++;
+    int lastDigit = n%10;
+    revNum = (revNum * 10) + lastDigit;
     n = n/10;
   }
-  cout<<count<<endl;
-
-  //* Approach two
-  int m = 7789;
-  int cnt = (int)(log10(m)+1);
-  cout<<cnt<<endl;
+  cout<<revNum<<endl;
   return 0;
 }
