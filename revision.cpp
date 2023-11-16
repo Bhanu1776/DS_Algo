@@ -1,44 +1,26 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-//? Remove Duplicates in-place from sorted array
+//? Left rotate an array by D places
 
 int main(){
 
-  int arr[5] = {1,2,3,3,5};
+  int arr[5] = {1,2,4,3,5};
 
   //* Brute force approach
 
-  // // Creating a set
-  // set<int> mySet;
-
-  // for(int i = 0; i<5; i++){
-  //   mySet.insert(arr[i]);
-  // }
-
-  // //Using Iterator, Transferring all the set values into an OG array
-  // int index=0;
-  // for(auto& element: mySet){
-  //   arr[index++] = element;
-  // }
-
-  // //Printing the array values
-  // for(int i = 0; i<4; i++){
-  //   cout<<arr[i];
-  // }
-  
+  // ITs pretty complex
 
 //* -------------------------------------------------------
 
-  //* Better approach
+  //* Optimal approach
 
-  int i = 0;
-  for(int j =1; j<5; j++){
-    if(arr[i]!=arr[j]){
-      arr[i+1] = arr[j];
-      i++;
-    }
+  int d = 2;
+  reverse(arr, arr+d);
+  reverse(arr+d, arr+5);
+  reverse(arr, arr+5);
+
+  for(int i=0; i<5; i++){
+    cout<<arr[i];
   }
-  cout<<"Size of a final array"<<i+1<<endl;
-  
 }
