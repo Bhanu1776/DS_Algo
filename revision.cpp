@@ -1,22 +1,15 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-//? Largest Element in an Array
+//? Check if an array is sorted or not! - no descending order
 
 int main(){
 
-  int arr[5] = {1,5,2,4,3};
+  int arr[5] = {1,1,2,3,3};
 
-  //* Brute Force Approach
-  // sort(arr, arr+5);     // Sort function takes 2 args (first element address, last element address)
-  // cout<<arr[4]<<endl;
-
-
-  //* Optimal Approach
-  int largestElement = arr[0];
-  for(int i=0; i<5; i++){
-    if(arr[i]>largestElement) largestElement=arr[i];
+  for(int i =0; i<5; i++){
+    if(arr[i]>arr[i-1]);    // Comparing with previous element
+    else return false;
   }
-  cout<<largestElement;
-
+  return true;
 }
