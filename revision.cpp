@@ -1,7 +1,7 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-//? Left rotate an array by D places
+//? Reversing an array
 
 int main(){
 
@@ -9,18 +9,24 @@ int main(){
 
   //* Brute force approach
 
-  // ITs pretty complex
+  // No brute force :)
 
 //* -------------------------------------------------------
 
   //* Optimal approach
 
-  int d = 2;
-  reverse(arr, arr+d);
-  reverse(arr+d, arr+5);
-  reverse(arr, arr+5);
+    int start = 0;
+    int end = 4;
 
-  for(int i=0; i<5; i++){
-    cout<<arr[i];
-  }
+    while(start<end){
+      int temp = arr[start];
+      arr[start] = arr[end];
+      arr[end] = temp;
+      start++;
+      end--;
+    }
+
+    for(int i=0; i<5; i++){
+      cout<<arr[i];
+    }
 }
