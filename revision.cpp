@@ -1,19 +1,22 @@
-#include <iostream>
-#include <cmath>
+#include<bits/stdc++.h>
 using namespace std;
 
-//? GCD = Greatest common divisor
+//? Largest Element in an Array
 
 int main(){
 
-  int a =52, b = 10;
+  int arr[5] = {1,5,2,4,3};
 
-  while(a>0 && b>0){
-    if(a>b) a=a%b;
-    else    b=b%a;
+  //* Brute Force Approach
+  // sort(arr, arr+5);     // Sort function takes 2 args (first element address, last element address)
+  // cout<<arr[4]<<endl;
+
+
+  //* Optimal Approach
+  int largestElement = arr[0];
+  for(int i=0; i<5; i++){
+    if(arr[i]>largestElement) largestElement=arr[i];
   }
-  if(a==0)  cout<<b;
-  else      cout<<a;
+  cout<<largestElement;
 
-  return 0;
 }
