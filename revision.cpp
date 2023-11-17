@@ -1,43 +1,32 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-//? Intersection of Two sorted Arrays
+//? Maximum consecutive ones
 
 int main(){
 
-  int arr1[6] = {1,1,2,3,4,5};
-  int arr2[6] = {2,3,4,4,5,6};
+  int arr[9] = {1,1,0,1,1,1,0,1,1};
 
   //* Brute force approach
 
-  // No brute force solution 😂
+  // No brute force solution 
 
 //* -------------------------------------------------------
 
   //* Optimal approach
 
-  int i = 0;
-  int j = 0;
+  int maxi = 0;
+  int count = 0;
 
-  // Size of both arrays
-  int n1 = 6;
-  int n2 = 6;
-
-  vector<int> outputArray;
-
-  while(i<n1 && j<n2){
-    if(arr1[i]<arr2[j])   i++;
-    else if(arr2[j]<arr1[i])    j++;
+  for(int i = 0; i<9; i++){
+    if(arr[i]==1){
+      count++;
+      maxi = max(maxi, count);
+    }
     else{
-      outputArray.push_back(arr1[i]);
-      i++;
-      j++;
+      count = 0;
     }
   }
 
-  //Printing the output
-  for(auto& element: outputArray){
-    cout<<element;
-  }
-  
+  cout<<maxi<<endl;
 }
