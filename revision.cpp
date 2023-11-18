@@ -1,86 +1,60 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-//? TwoSum problem
+//? Remove Duplicates from Sorted Array II
 
-vector<int> Brute(vector<int>& nums, int target) {
-  vector<int> outputArray;
+int Brute(vector<int>& nums) {
+   map<int, int> countMap;                 // In the map, left will contain value and right will have count
 
-  for(int i =0; i<nums.size(); i++){
-      for(int j=i+1; j<nums.size(); j++){
-          if(nums[i]+nums[j]==target){
-              outputArray.push_back(i);
-              outputArray.push_back(j);
-              break;
+      for (int num : nums) {
+          countMap[num]++;            // Left side i'm storing value, if the same again repeats then it will increase the count by 1
+      }
+
+      int index = 0;
+      for (auto& pair : countMap) {
+          int num = pair.first;
+          int count = pair.second;
+
+          nums[index++] = num;            // First time i will store usually
+
+          if (count >= 2) {
+              nums[index++] = num;        // But second time i'll store if the count is greater than equal to 2!
           }
       }
-  }
-  return outputArray;
+
+      return index;
 }
 
-// Using Map
-vector<int> Better(vector<int>& nums, int target) {
-    map<int,int> output;
-    int n = nums.size();
-
-    for(int i = 0; i<n; i++){
-        int num = nums[i];
-        int val = target - nums[i];
-
-        if(output.find(val) != output.end()){
-            return {output[val], i};
+int Optimal(vector<int>& nums) {
+    if(nums.size()<=2){                 // base
+            return nums.size();
         }
-        output[num] = i;
-    }
-    return {-1, -1};
-}
 
-// Using two pointer approach - different variant
-string Optimal(vector<int>& nums, int target) {
-    int n = nums.size();
-    int left = 0;
-    int right = n-1;
-
-    while(left<right){
-      int sum = nums[left] + nums[right];
-
-      if(sum == target){
-        return "Yes";
-      }
-      else if(sum<target)   left++;
-      else right--;
-    }
-    return "NO";
+        int i = 2;                    // Start from the third element
+        for(int j = 2; j<nums.size(); j++){         // Book me Dry run kar samhjega!!
+            if(nums[i-2] != nums[j]){
+                nums[i] = nums[j];
+                i++;
+            }
+        }
+        return i;
 }
 
 int main(){
 
-  vector<int> nums = {2,7,11,15};
-  int target = 9;
+  vector<int> nums = {1,1,1,2,2,3};
 
   //* Brute force approach
 
-  // vector<int> output = Brute(nums, target);
+  int SizeOfArray = Brute(nums);
+  cout<<SizeOfArray;
 
-  // for(auto& element:output ){
-  //   cout<<element;
-  // }
-  
-
-//* -------------------------------------------------------
-
-  //* Better approach
-
-  vector<int> output = Better(nums, target);
-
-  for(auto& element:output ){
-    cout<<element;
-  }
 
 //* -------------------------------------------------------
 
   //* Optimal approach
 
-  // cout<<Optimal(nums, target);
+  int SizeOfArray = Optimal(nums);
+  cout<<SizeOfArray;
 
 }
