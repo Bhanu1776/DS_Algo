@@ -1,41 +1,30 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-//? Median of Two Sorted Arrays
+//? Container With Most Water
 
-//* Steps:-
-//  1) First create a new vector considering two given array sizes
-//  1) Merge both give arrays into a newly created one
-//  1) Sort the merged array
-//  1) Find the median
-//      a) Where size of the merged array is (even)
-//          - Find out using given formula (Hard formula bc!!)    //* Imp to remember
-//      b) Where (odd)
-//          - dived the size of merged array (simple formula)
+int maxArea(vector<int>& height) {
+    int n = height.size();
+    int left = 0;         // At start
+    int right = n-1;      // At end
+    int ans = 0;          // Storing the max area
 
-double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
-    vector<int> merged;
-    merged.reserve(nums1.size() + nums2.size());
-    
-    merged.insert(merged.end(), nums1.begin(), nums1.end());
-    merged.insert(merged.end(), nums2.begin(), nums2.end());
-    
-    sort(merged.begin(), merged.end());
-
-    int combinedLength = merged.size();
-    if (combinedLength % 2 == 0) {            // If the total number of elements in the merged array is even
-                                              // Calculate the median for an even number of elements
-        return (merged[combinedLength / 2 - 1] + merged[combinedLength / 2]) / 2.0;         //* Imp to remember
-    } else {                                  // If the total number of elements in the merged array is odd
-                                              // Calculate the median for an odd number of elements
-        return merged[combinedLength / 2];
+    while(left<right){
+        ans = max(ans, (right-left)*min(height[left], height[right]));        // Dry run this based on given histograms
+                                          // We want max area so that we can understand between which histograms max water we are able to store
+        if(height[left]<height[right]){
+            left++;
+        }
+        else{
+            right--;
+        }
     }
+    return ans;
 }
 
 int main(){
 
-  vector<int> nums1 = {1,2};
-  vector<int> nums2 = {3,4};
+  vector<int> height = {1,8,6,2,5,4,8,3,7};
 
   //* Brute force approach
 
@@ -45,7 +34,9 @@ int main(){
 
   //* Optimal approach
 
-  double output = findMedianSortedArrays(nums1, nums2);
+  int output = maxArea(height);
   cout<<output;
 
 }
+
+//* Leetcode problem link: https://leetcode.com/problems/container-with-most-water/
