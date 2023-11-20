@@ -1,53 +1,36 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-//? Sort 0s,1s,2s - Dutch National Flag Algorithm
-//? Leetcode problem name ==> sortColors (red, blue, white)    - Easy AF!
+//? Best Time to Buy and Sell Stock
 
-void sortColors(vector<int>& nums) {
-    int n = nums.size();
+int maxProfit(vector<int>& prices) {
 
-    int low = 0;
-    int mid = 0;
-    int high = n-1;
+    int mini = INT_MAX;
+    int profit = 0;
 
-    while(mid<=high){                           //* Dry run to get a clear idea!
-        if(nums[mid] == 2){
-            swap(nums[mid], nums[high]);
-            high--;
-        }
-        else if(nums[mid] == 1){
-            mid++;
-        }
-        else{
-            swap(nums[mid], nums[low]);
-            low++;
-            mid++;
-        }
+    for(int i = 0; i<prices.size(); i++){
+        mini = min(mini, prices[i]);
+        profit = max(profit, prices[i] - mini);
     }
+
+    return profit;
+
 }
 
 int main(){
 
-  vector<int> nums = {2,0,2,1,1,0};
+  vector<int> prices = {7,1,5,3,6,4};
 
   //* Brute force approach
 
-  // No Brute force soln
+  // Running two loops comparing with each and every number and getting the final output.
   
 
 //* -------------------------------------------------------
 
   //* Optimal approach 
 
-    sortColors(nums);
-
-    // Printing the output
-    for(auto& element: nums){
-      cout<<element<<' ';
-    }
+  int profit = maxProfit(prices);
+  cout<<profit;
+    
 }
-
-
-//? Why Dutch Flag algo is named as Dutch Flag Algo?
-//* Bcoz whenever we sort the colors it represents dutch flag (red, white, blue) that is why it is named as dutch's national flag algorithm
