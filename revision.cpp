@@ -1,54 +1,63 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-//? Merge Intervals (Merge all overlapping intervals)     -- Watch video 
+//? Merge two sorted arrays without extra space
 
-vector<vector<int>> merge(vector<vector<int>>& intervals) {
-    vector<vector<int>> ans;
-    int n = intervals.size();
 
-    if(n==0)    return ans;
+//* Approach 1
 
-    sort(intervals.begin(), intervals.end());
-    vector<int> prev = intervals[0];
-
-    for(int i = 1; i<n; i++){
-        int curr_start = intervals[i][0];
-        int prev_end = prev[1];
-
-        if(curr_start<=prev_end){
-            prev[1] = max(prev[1], intervals[i][1]);
-        }
-        else{
-            ans.push_back(prev);
-            prev = intervals[i];
+void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
+    int i = m - 1;
+    int j = n - 1;
+    int k = m + n - 1;
+    
+    while (j >= 0) {
+        if (i >= 0 && nums1[i] > nums2[j]) {
+            nums1[k--] = nums1[i--];
+        } else {
+            nums1[k--] = nums2[j--];
         }
     }
-    ans.push_back(prev);
-
-    return ans;
 }
+
+
+//* Approach 2
+
+void merge2(vector<int>& nums1, int m, vector<int>& nums2, int n) {
+        nums1.resize(m);
+        for(int i = 0; i < n; i++){
+            nums1.push_back(nums2[i]);
+        }
+
+        sort(nums1.begin(), nums1.end());
+    }
+
 
 int main(){
 
-  vector<vector<int>> matrix = {{1,3}, {2,6}, {8,10}, {15,18}};
+  vector<int> nums1 = {1,2,3,0,0,0};
+  vector<int> nums2 = {2,5,6};
+
+  int m = 3;
+  int n = 3;
+
 
   //* Brute force approach
 
-  // No brute force soln
+  // First we will create new array with the size of both given arrays
+  // Then, we can simply iterate through both arrays and transfer to a new array
+  // at last we will transfer new array values to both arrays respective to their sizes
   
 
 //* -------------------------------------------------------
 
   //* Optimal approach 
 
-  vector<vector<int>> output = merge(matrix);
+  merge(nums1, m, nums2, n);
+  // merge2(nums1, m, nums2, n);
 
-  for(int i = 0; i<matrix.size(); i++){
-    for(int j = 0; j<matrix[0].size(); j++){
-      cout<<output[i][j];
-    }
+  for(auto& element: nums1){
+    cout<<element;
   }
-}
 
-//* Video Link: https://youtu.be/ot1EnxRl5DM?si=G9AAgFPCI5Q8YFQS
+}
