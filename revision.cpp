@@ -1,63 +1,42 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-//? Merge two sorted arrays without extra space
+//? Find the Duplicate Number   - Using Floyd's Cycle Detection algo
+// In an array only one number will be duplicate number
 
+int findDuplicate(vector<int>& nums) {
 
-//* Approach 1
+    int slow = nums[0];
+    int fast = nums[0];
 
-void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
-    int i = m - 1;
-    int j = n - 1;
-    int k = m + n - 1;
-    
-    while (j >= 0) {
-        if (i >= 0 && nums1[i] > nums2[j]) {
-            nums1[k--] = nums1[i--];
-        } else {
-            nums1[k--] = nums2[j--];
-        }
+    do{
+        slow = nums[slow];                    // Initially slow pointer will move only one step ahead
+        fast = nums[nums[fast]];              // Fast will move two steps
+    }while(slow!=fast);
+
+    slow = nums[0];                           //* Whenever slow and fast pointer meets, we will place slow to the very first position
+    while(slow!=fast){
+        slow = nums[slow];
+        fast = nums[fast];                    // And Both slow and fast pointer will only move one step
     }
+    return slow;                              // Wherever both meets again, that number will be the duplicate one!
 }
-
-
-//* Approach 2
-
-void merge2(vector<int>& nums1, int m, vector<int>& nums2, int n) {
-        nums1.resize(m);
-        for(int i = 0; i < n; i++){
-            nums1.push_back(nums2[i]);
-        }
-
-        sort(nums1.begin(), nums1.end());
-    }
-
 
 int main(){
 
-  vector<int> nums1 = {1,2,3,0,0,0};
-  vector<int> nums2 = {2,5,6};
-
-  int m = 3;
-  int n = 3;
+  vector<int> nums = {3,1,3,4,2};
 
 
   //* Brute force approach
+  // In the brute force approach, we will first sort the array
+  // Then we will run the loop and check any same number placed twice, that will be the answer
 
-  // First we will create new array with the size of both given arrays
-  // Then, we can simply iterate through both arrays and transfer to a new array
-  // at last we will transfer new array values to both arrays respective to their sizes
-  
 
 //* -------------------------------------------------------
 
   //* Optimal approach 
 
-  merge(nums1, m, nums2, n);
-  // merge2(nums1, m, nums2, n);
-
-  for(auto& element: nums1){
-    cout<<element;
-  }
+  int output = findDuplicate(nums);
+  cout<<output<<endl;
 
 }
