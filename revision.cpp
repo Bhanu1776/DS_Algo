@@ -1,55 +1,54 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-//? Rotate Image by 90deg
+//? Merge Intervals (Merge all overlapping intervals)     -- Watch video 
 
-// The first row will be the last col
-// The second row will be the second last col
-// The third row will be the third last col
+vector<vector<int>> merge(vector<vector<int>>& intervals) {
+    vector<vector<int>> ans;
+    int n = intervals.size();
 
-//*  1 2 3         7 4 1
-//*  4 5 6   ==>   8 5 2
-//*  7 8 9         9 6 3
+    if(n==0)    return ans;
 
+    sort(intervals.begin(), intervals.end());
+    vector<int> prev = intervals[0];
 
-void rotate(vector<vector<int>>& matrix) {      
-    int n = matrix.size();
+    for(int i = 1; i<n; i++){
+        int curr_start = intervals[i][0];
+        int prev_end = prev[1];
 
-    for(int i = 0; i<n; i++){                  //* Step 1) Finding out the transpose
-        for(int j=0; j<i; j++){
-            swap(matrix[i][j], matrix[j][i]);   // Remember this way!
+        if(curr_start<=prev_end){
+            prev[1] = max(prev[1], intervals[i][1]);
+        }
+        else{
+            ans.push_back(prev);
+            prev = intervals[i];
         }
     }
+    ans.push_back(prev);
 
-    for(int i = 0; i<n; i++){
-        reverse(matrix[i].begin(), matrix[i].end());    //* Step 2) Reversing the transposed matrix
-    }
+    return ans;
 }
-
 
 int main(){
 
-  vector<vector<int>> matrix = {{1,2,3}, {4,5,6}, {7,8,9}};
+  vector<vector<int>> matrix = {{1,3}, {2,6}, {8,10}, {15,18}};
 
   //* Brute force approach
 
-  // We will be placing the first row into new matrix as last col, second row as last second col, likewise...
+  // No brute force soln
   
 
 //* -------------------------------------------------------
 
   //* Optimal approach 
 
-//? Observation from the above matrix:
-// Diagonal elements will always be same when rotated
-// When we transpose the og matrix and later reverse the whole matrix will give the resultant output
+  vector<vector<int>> output = merge(matrix);
 
-  rotate(matrix);
-
-  for(int i = 0; i<matrix.size(); i++){                  
-    for(int j=0; j<matrix[0].size(); j++){
-        cout<<matrix[i][j]<<' ';
+  for(int i = 0; i<matrix.size(); i++){
+    for(int j = 0; j<matrix[0].size(); j++){
+      cout<<output[i][j];
     }
-    cout<<endl;
   }
 }
+
+//* Video Link: https://youtu.be/ot1EnxRl5DM?si=G9AAgFPCI5Q8YFQS
