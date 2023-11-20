@@ -1,35 +1,53 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-//? Maximum Subarray - Kadane's algorithm - Easy AF!
+//? Sort 0s,1s,2s - Dutch National Flag Algorithm
+//? Leetcode problem name ==> sortColors (red, blue, white)    - Easy AF!
 
-int maxSubArray(vector<int>& nums) {
-    int curr_sum = 0;
-    int max_sum = INT_MIN;
+void sortColors(vector<int>& nums) {
+    int n = nums.size();
 
-    for(int i = 0; i<nums.size(); i++){         //* Dry run karle
-        curr_sum = curr_sum + nums[i];
-        max_sum = max(max_sum, curr_sum);
+    int low = 0;
+    int mid = 0;
+    int high = n-1;
 
-        if(curr_sum<0)  curr_sum = 0;
+    while(mid<=high){                           //* Dry run to get a clear idea!
+        if(nums[mid] == 2){
+            swap(nums[mid], nums[high]);
+            high--;
+        }
+        else if(nums[mid] == 1){
+            mid++;
+        }
+        else{
+            swap(nums[mid], nums[low]);
+            low++;
+            mid++;
+        }
     }
-
-    return max_sum;
 }
 
 int main(){
 
-  vector<int> nums = {-2,1,-3,4,-1,2,1,-5,4};
+  vector<int> nums = {2,0,2,1,1,0};
 
   //* Brute force approach
 
-  // In Brute force approach total 3 loops will run and will find the maximum
+  // No Brute force soln
   
 
 //* -------------------------------------------------------
 
-  //* Optimal approach - Using Kadane's Algorithm
+  //* Optimal approach 
 
-    int maxSum = maxSubArray(nums);
-    cout<<maxSum<<endl;
+    sortColors(nums);
+
+    // Printing the output
+    for(auto& element: nums){
+      cout<<element<<' ';
+    }
 }
+
+
+//? Why Dutch Flag algo is named as Dutch Flag Algo?
+//* Bcoz whenever we sort the colors it represents dutch flag (red, white, blue) that is why it is named as dutch's national flag algorithm
