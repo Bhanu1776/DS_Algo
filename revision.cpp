@@ -1,65 +1,74 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-//? Set Matrix Zeros
+//? Pascal's Triangle
 
-vector<vector<int>> zeroMatrix(vector<vector<int>> &matrix, int n, int m) {
+//* Approach One
 
-	int baharKaRow[n] = {0};
-	int baharKaCol[m] = {0};
+// This function will take row number as input and returns the entire row values on that row index
+vector<int> generateRow(int row){
+    long long ans = 1;                      // The row will generally starts wtih 1 (for every pascals row )
+    vector<int> ansRow;
+    ansRow.push_back(1);
 
-	for(int i = 0; i<n; i++){
-		for(int j = 0; j<m; j++){
-			if(matrix[i][j]==0){
-				baharKaRow[i] = 1;
-				baharKaCol[j] = 1;
-			}
-		}
-	}
+    for(int col = 1; col<row; col++){
+        ans = ans * (row - col);
+        ans = ans/col;
+        ansRow.push_back(ans);
+    }
+    return ansRow;
+}
 
-	for(int i = 0; i<n; i++){
-		for(int j= 0; j<m; j++){
-			if(baharKaRow[i] ==1 || baharKaCol[j] == 1){
-				matrix[i][j]=0;
-			}
-		}
-	}
-	return matrix;
+vector<vector<int>> Hard(int N) {
+    
+    vector<vector<int>> ans;
+    for(int i = 1; i<=N; i++){
+        ans.push_back(generateRow(i));
+    }
+    return ans;
+}
+
+//* -------------------------------------------------------
+
+
+//* Approach Two  -- Refer this!!
+vector<vector<int>> Easy(int numRows) {
+        
+    vector<vector<int>> ans(numRows);           // This to return final ans
+
+    for(int i = 0; i<numRows; i++){
+        vector<int> temp(i+1, 1);               // Creating new 1d vector so that we can store the calculated values
+                                                // Initially this vector is going to be filled with all ones
+
+        for(int j = 1; j<i; j++){               // Traverse the elements from the second to second-last position of the current row
+            temp[j] = ans[i-1][j] + ans[i-1][j-1];      // Val ke uppar wale row ka value and uske baju wale value ka addition
+        }
+        ans[i] = temp;                          // Store the current row in the Pascal's Triangle
+    }
+    return ans;
 }
 
 int main(){
 
-  vector<vector<int>> matrix = {{1,1,1},{1,0,1},{1,1,1}};
-  int n = matrix.size();
-  int m = matrix[0].size();
+  int numRows = 5;
 
-  vector<vector<int>> output = zeroMatrix(matrix, n, m);
-  
-  for(int i = 0; i<n; i++){
-		for(int j= 0; j<m; j++){
-			cout<<matrix[i][j]<<' ';
-		}
-    cout<<endl;
-	}
-  //* Brute force approach
-
-  // We will create exact same array with all the set zeros
-  // This will take extra space and time.
-
-//* -------------------------------------------------------
 
   //* Better approach (Best)
 
+  // vector<vector<int>> output = Hard(numRows);
   
-
 
 //* -------------------------------------------------------
 
   //* Optimal approach (Hard)
 
-  // In optimal approach we are not going to use any dummy array this will reduce space
-  // Instead of we will consider matrix's first row and col as a dummy array
-  // But there's a catch the very first element of matrix is going to present for both col and row
-  // So for that first element we will store the value in another variable in the form of boolean 
+  vector<vector<int>> output = Easy(numRows);
+  
+  for(int i = 0; i<output.size(); i++){
+		for(int j= 0; j<i+1; j++){
+			cout<<output[i][j]<<' ';
+		}
+    cout<<endl;
+	}
 
 }
