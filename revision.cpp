@@ -1,49 +1,79 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-//? Missing and repeating numbers
+//? Count Inversions of Array using Merge sort
+// i < j
+// arr[i] > arr[j]
 
-pair<int, int> missingAndRepeating(vector<int> &A, int n) {
+int merge(long long *arr, int low, int mid, int high) {
+  vector<int> temp;
 
-  int x = 0, y = 0;
+  int cnt = 0;
+  int left = low, right = mid + 1;
 
-  long long sum = (n * (n + 1)) / 2;            // Calculate the sum of the first n natural numbers
-  long long sum2 = (n * (n + 1) * ((2 * n) + 1)) / 6;       // Calculate the sum of squares of the first n natural numbers
+  while (left <= mid and right <= high) {
+    if (arr[left] <= arr[right]) {
+      temp.push_back(arr[left]);
+      left++;
+    } else {
+      temp.push_back(arr[right]);
+      cnt += mid - left + 1;
+      right++;
+    }
+  }
+  while (left <= mid) {
+    temp.push_back(arr[left]);
+    left++;
+  }
+  while (right <= high) {
+    temp.push_back(arr[right]);
+    right++;
+  }
 
-  for (auto i : A) {                            //* Dry run kar!
-    sum -= 1ll * i;                             // Subtract each element from the total sum (sum will represent x - y)       
-    sum2 -= (1ll * i * i);                      // Subtract the square of each element from the sum of squares (sum2 will represent x^2 - y^2)
-  }                                             //* ll after one stands for long long
+  for (int i = low; i <= high; i++) {
 
-  x = (sum2 - (sum * sum)) / (2 * sum);         // Finding repeating Number
-  y = (sum + x);                                // Finding Missing number
+    arr[i] = temp[i - low];
+  }
 
-  return {y, x};
+  return cnt;
+}
+
+int mergesort(long long *arr, int low, int high) {
+  int cnt = 0;
+
+  if (low >= high)  return cnt;
+
+  int mid = (low + high) / 2;
+  cnt += mergesort(arr, low, mid);
+  cnt += mergesort(arr, mid + 1, high);
+  cnt += merge(arr, low, mid, high);
+  
+  return cnt;
+}
+
+long long getInversions(long long &arr, int n) {
+  long long cnt = 0;
+  cnt = mergesort(arr, 0, n - 1);
+  return cnt;
 }
 
 
 int main(){
 
-  vector<int> nums = {3,3,2,1};
-  int n = nums.size();
+  vector<int> arr = {3,3,2,1};
+  int n = arr.size();
 
 
   //* Brute force approach
 
-  // Creating 1 to n numbers array
-  // Comparing it with given array, we will mark frequencies
-  // If one element is present freq would be one! and if repeating numbers are found freq would be 2
-  // In the same way if freq is 0 then it would be missing number
-
+  // n^2 soln where we running two loops iterating through array and finding soln
 
 //* -------------------------------------------------------
 
   //* Optimal approach 
 
-  pair<int, int> myPair = missingAndRepeating(nums, n);
- 
-    cout << myPair.first << " ";
-    cout << myPair.second << endl;
+  long long output = getInversions(arr, n);
+  cout<<output;
 
 
 }
