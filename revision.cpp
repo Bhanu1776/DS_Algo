@@ -1,44 +1,60 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-//? Majority Element - n/2
-// The majority element is the element that appears more than ⌊n / 2⌋ times. You may assume that the majority element always exists in the array.
+//? Majority Element - n/3
+// The majority element is the element that appears more than ⌊n / 3⌋ times. You may assume that the majority element always exists in the array.
 
-int Better(vector<int> v){                      //* Whenever we plays with count, Hashing comes into the picture
-  map<int, int> myMap;                          // Using map, i will be storing the value in left and count on the right
 
-  for(int i = 0; i<v.size(); i++){
-    myMap[v[i]]++;                              // whenever element occurs again i'll increment the count
-  }
+vector<int> majorityElement(vector<int>& nums) {                //* Moore's Voting Algorithm  - Imp to understand the algorithm
+    int count1 = 0, count2 = 0;                     
+    int candidate1 = 0, candidate2 = 0;         // Potential candidates
 
-  for(auto element: myMap){
-    if(element.second > (v.size() / 2)){        // If my element count is greater than half of my overall size of an array then that would be my answer
-      return element.first;
+    // First loop to find potential majority elements.
+    for (int i = 0; i < nums.size(); i++) {
+        
+        if (count1 == 0 && nums[i] != candidate2) {         // If count1 is 0 and the current number is not equal to candidate2, update candidate1.
+            count1 = 1;
+            candidate1 = nums[i];
+        } 
+        else if (count2 == 0 && nums[i] != candidate1) {    // If count2 is 0 and the current number is not equal to candidate1, update candidate2.
+            count2 = 1;
+            candidate2 = nums[i];
+        } 
+        else if (candidate1 == nums[i]) {
+            count1++;
+        }
+        else if (candidate2 == nums[i]) {
+            count2++;
+        } 
+        else {
+            count1--;
+            count2--;
+        }
     }
-  }
-  return -1;                                    //* T.C ==> O(N logn) + N     // S.C ==> O(n) - If values in an array are unique
-}
 
+    vector<int> result;
+    int threshold = nums.size() / 3;            // Threshold for majority element
 
+    // Second loop to count occurrences of the potential majority elements.
+    count1 = 0, count2 = 0;
+    for (int i = 0; i < nums.size(); i++) {
+        if (candidate1 == nums[i]) {
+            count1++;
+        } else if (candidate2 == nums[i]) {
+            count2++;
+        }
+    }
 
-int Optimal(vector<int>& nums) {                //* Moore's Voting Algorithm  - Imp to understand the algorithm
-  int count = 0;
-  int candidate = 0;
-  
-  for (int num : nums) {
-      if (count == 0) {
-          candidate = num;
-      }
+    // Check if the counts of potential majority elements are greater than n/3 and add them to the result.
+    if (count1 > threshold) {
+        result.push_back(candidate1);
+    }
+    if (count2 > threshold) {
+        result.push_back(candidate2);
+    }
 
-      if (num == candidate) {                   // Whenever the first element occurs increase the count, apart from first element anything else occurs decrease the count
-          count++;
-      } else {
-          count--;
-      }
-  }
-  
-  return candidate;                             //* T.C ==> O(N)      // S.C ==> O(1)
-}
+    return result;                              //* T.C ==> O(N)      // S.C ==> O(1)
+}                     
 
 
 int main(){
@@ -50,20 +66,30 @@ int main(){
 
   // in the brute force solution, I will assume my first element to be the majority element for that i will run one more loop
   // The second loop will help me to keep a count while searching through entire array
+  // The soln will be returning atleast two majority elements - add condition if(returning_vector.size() == 2)  break;
+  // The theory behind this is, if the size of an array is 8 therefore the maximum 2 elements can occur consisting of 3 - 3 frequencies
   // Time complexity for this problem would be O(n^2)
 
 //* -------------------------------------------------------
 
   //* Better approach 
-  
-  // int output1 = Better(nums);
-  // cout<<output1<<endl;
+
+  // Just like previous sum we are going to use hashmaps - wherever we plays with counting we use hashing technique
+  // We will iterate through an array and store the value as key and their count as value.
+  // The moment any of the element answer goes to 3 - we will store into the ans
+  // Bcoz n/3 means any majority element would consist of atleast 3 frequency
+  // In the one iteration only we can get the soln, this will surely reduce time.
+  // We don't have to iterate through hashmap and see whose count is greater! 
+  //* Due to one iteration the T.C will be O(N logN) and S.C will be O(n)
 
 //* -------------------------------------------------------
 
   //* Optimal approach 
 
-  int output2 = Optimal(nums);
-  cout<<output2<<endl;
+  vector<int> output = majorityElement(nums);
+  
+  for(auto i:output){
+    cout<<i;
+  }
 
 }
