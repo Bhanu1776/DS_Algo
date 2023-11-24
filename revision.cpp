@@ -1,43 +1,69 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-//? Pow(x, n)
+//? Majority Element - n/2
+// The majority element is the element that appears more than ⌊n / 2⌋ times. You may assume that the majority element always exists in the array.
 
-double myPow(double x, int n) {
-    long int power = n;
-    double ans = 1.0;
+int Better(vector<int> v){                      //* Whenever we plays with count, Hashing comes into the picture
+  map<int, int> myMap;                          // Using map, i will be storing the value in left and count on the right
 
-    if(n<0) power *= -1;            // If the given number is negative, make it positive
+  for(int i = 0; i<v.size(); i++){
+    myMap[v[i]]++;                              // whenever element occurs again i'll increment the count
+  }
 
-    while(power!=0){
-        if(power%2){                // If power is even
-            ans *= x;
-            power--;
-        }
-        else{                       // If power is odd
-            x *= x;
-            power/=2;
-        }
+  for(auto element: myMap){
+    if(element.second > (v.size() / 2)){        // If my element count is greater than half of my overall size of an array then that would be my answer
+      return element.first;
     }
-    if(n<0) ans = 1.0/ans;          // If power is negative we making it positive
-
-    return ans;                     //* Time complexity is: O(log n)
+  }
+  return -1;                                    //* T.C ==> O(N logn) + N     // S.C ==> O(n) - If values in an array are unique
 }
+
+
+
+int Optimal(vector<int>& nums) {                //* Moore's Voting Algorithm  - Imp to understand the algorithm
+  int count = 0;
+  int candidate = 0;
+  
+  for (int num : nums) {
+      if (count == 0) {
+          candidate = num;
+      }
+
+      if (num == candidate) {                   // Whenever the first element occurs increase the count, apart from first element anything else occurs decrease the count
+          count++;
+      } else {
+          count--;
+      }
+  }
+  
+  return candidate;                             //* T.C ==> O(N)      // S.C ==> O(1)
+}
+
 
 int main(){
 
-  double x = 2.00000;
-  int n = 10;
+  vector<int> nums = {3,2,3};
+  
 
   //* Brute force approach
 
-  // No brute force soln
+  // in the brute force solution, I will assume my first element to be the majority element for that i will run one more loop
+  // The second loop will help me to keep a count while searching through entire array
+  // Time complexity for this problem would be O(n^2)
+
+//* -------------------------------------------------------
+
+  //* Better approach 
+  
+  // int output1 = Better(nums);
+  // cout<<output1<<endl;
 
 //* -------------------------------------------------------
 
   //* Optimal approach 
 
-  double output = myPow(x, n);
-  cout<<output;
+  int output2 = Optimal(nums);
+  cout<<output2<<endl;
 
 }
