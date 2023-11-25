@@ -1,79 +1,145 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-//? Reverse Pairs
-// a[i] > 2 * a[j]
-// [4, 6, 2] ==> In this given array 6 is greater than 2*2=4, so this pair will be count as 1, likewise we need to find all the pairs
+//? Three sum 
+// Return all the triplets whose sum is 0 and that should be unique
 
+vector<vector<int>> Brute(vector<int>& nums) {
 
-//* Typical merge sort code and adding our logic in between
-void merge(vector<int> &nums, int l, int m, int r){
-      int count = 0;
-
-      //copy into right & left array
-      vector<int>left(nums.begin()+l,nums.begin()+m+1);
-      vector<int>right(nums.begin()+m+1,nums.begin()+r+1);
-
-      int i = 0, j = 0, n1 = left.size(),n2 = right.size();
-      
-      while(i < n1 && j < n2){
-          if (left[i] <= right[j])
-              nums[l++] = left[i++];
-          else{
-            nums[l++] = right[j++];
-          }     
+  set<vector<int>> mySet;                     
+  
+  for(int i=0; i<nums.size(); i++){
+      for(int j=i+1; j<nums.size(); j++){
+          for(int k=j+1; k<nums.size(); k++){
+              if(nums[i] + nums[j] + nums[k] == 0){
+                  vector<int> temp = {nums[i], nums[j], nums[k]};
+                  sort(temp.begin(), temp.end());                 // Sorting so that it will be easy to neglect duplicates
+                  mySet.insert(temp);                             // Storing in set bcoz we don't want duplicate values
+              }
+          }
       }
-      while (i < n1)
-          nums[l++] = left[i++];
-      while (j < n2)
-          nums[l++] = right[j++];
   }
+  vector<vector<int>> ans(mySet.begin(), mySet.end());
+  return ans;
+}
 
 
-  //* This is the logic
-  int countPairs(vector<int>&nums,int l, int m, int r){
-      int count = 0;
-      for(int i = l, j = m+1; i <= m; i++){
-          while(j <= r && nums[i] > 2LL*nums[j]) j++;
-          count += j-(m+1);
+
+vector<vector<int>> Better(vector<int>& nums) {   // Dry run to understand better
+
+  set<vector<int>> mySet;
+  
+  for(int i=0; i<nums.size(); i++){
+      set<int>  hashset;                        // Whenever i increases we need to empty hashtable
+
+      for(int j=i+1; j<nums.size(); j++){
+          int third = - (nums[i] + nums[j]);    //* This is how we finding third element, just like what we did in 2sum problem
+          
+          if(hashset.find(third) != hashset.end()){           // These steps to eliminate duplicate triplets
+              vector<int> temp = {nums[i], nums[j], third};
+              sort(temp.begin(), temp.end());
+              mySet.insert(temp);
+          }
+          hashset.insert(nums[j]);              // In the hashmap we are storing the third element, which we need to find
       }
-      return count;
   }
+  vector<vector<int>> ans(mySet.begin(), mySet.end());
+  return ans;
+}
 
 
-  int mergeSort(vector<int> &nums, int l, int r){
-      int count = 0;
-      if (l == r) return count;
-      
-      int m = l + (r-l)/2;
-      
-      count += mergeSort(nums,l,m);             //left part sort
-      count += mergeSort(nums,m+1,r);           //right part sort
-      count += countPairs(nums,l,m,r);          //count pairs
-      merge(nums,l,m,r);                        //merge these sorted array
 
-      return count;
+vector<vector<int>> Optimal(vector<int>& nums) {
+
+  int n = nums.size();
+  vector<vector<int>> ans;
+
+  sort(nums.begin(), nums.end());               //* IMP: In this approach, I am sorting the array at the very beginning
+
+  for(int i = 0; i < n; i++) {
+      if(i >0 && nums[i] == nums[i - 1]) continue;    // This is the case where my ith index is not at 0th position and it should not be as same as previous element
+                                                      // continue means, my code will not go down it will increment i++
+      int j = i + 1;                            // Starting of jth index will be one step ahead of i
+      int k = n - 1;                            // k will start from last
+
+      while(j < k) {
+          int sum = nums[i] + nums[j] + nums[k];
+
+          if(sum > 0) {
+              k--;
+
+          }
+          else if(sum < 0) {
+              j++;
+
+          }
+          else{                                 // The case where we found triplet
+              vector<int> temp = {nums[i] , nums[j] , nums[k]};
+              ans.push_back(temp);
+              j++;
+              k--;
+              while(j < k && nums[j] == nums[j - 1]) j++;       // We doing this because we don't want our j and i index should move at same number
+              while(j < k && nums[k] == nums[k + 1]) k--;
+          }
+      }
   }
-    int reversePairs(vector<int>& nums) {
-        return mergeSort(nums,0,nums.size()-1);
-    }
+  return ans;
+}
 
 int main(){
 
-  vector<int> nums = {1,3,2,3,1};
+  vector<int> nums = {-1,0,1,2,-1,-4};
 
   //* Brute force approach
+  // Steps:-
+    // 1) Iterate through array using three loops because we need three values right.
+    // 2) check if sum of three elements are giving 0, if yes store in temporary array;
+    // 3) Now we need to sort the array (to handle duplicates);
+    // 4) To deal with duplicates, we will send all values to "set" data structure
+    // 5) At the end we will create a vector which we want to return and transfer all the set values into ans vector.
+    //* T.C ==> O(n^3), S.C ==> O(2N)
 
-  // In the brute force approach, we will go from i=0 to n-1 and then another loop that will start from j=i+1 to n-1
-  // wherever we find a[i] > 2 * a[j] we will increase the count;
-  // Time complexity will be O(n^2) and S.C will be O(1)
+  // vector<vector<int>> output1 = Brute(nums);
 
- 
+  // for(auto row: output1){
+  //   for(auto col: row){
+  //     cout<<col<<", ";
+  //   }
+  //   cout<<endl;
+  // }
+
+
+
 //* -------------------------------------------------------
 
-  //* Optimal approach -- Its pretty difficult
+  //* Better approach 
 
-  int output = reversePairs(nums);
-  cout<<output;
+  vector<vector<int>> output2 = Better(nums);
+
+  for(auto row: output2){
+    for(auto col: row){
+      cout<<col<<", ";
+    }
+    cout<<endl;
+  }
+
+  //* T.C ==> O(n^2 * logM), S.C ==> O(2N)
+
+
+//* -------------------------------------------------------
+
+  //* Optimal approach 
+
+  vector<vector<int>> output3 = Optimal(nums);
+
+  for(auto row: output3){
+    for(auto col: row){
+      cout<<col<<", ";
+    }
+    cout<<endl;
+  }
+
+  //* T.C ==> O(N logN) + O(MxN),   -- MxN bcoz we running 2 while loops
+  //* S.C ==> O(1)
 
 }
