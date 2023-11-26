@@ -1,88 +1,59 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-//? Four Sum
-// Sum of 4 elements should be equivalent to the given target
-//! before going through 4 sum problem, please revise 3 sum problem
+//? Longest Subarray With K Sum - Hard bc!
 
-vector<vector<int>> Optimal(vector<int>& nums, int target) {
+
+// This is correct only if array contains positives and zeros 
+int subarraySum(vector<int>& nums, int k) {
+    int left = 0;
+    int right = 0;
+    long long sum = nums[0];
+    int maxLen = 0;
     int n = nums.size();
-    vector<vector<int>> ans;
 
-
-    sort(nums.begin(), nums.end());             // 1) sort the given array
-
-    for (int i = 0; i < n; i++) {
-        if (i > 0 && nums[i] == nums[i - 1]) continue;    // avoid the duplicates while moving i
-
-        for (int j = i + 1; j < n; j++) {
-            
-            if (j > i + 1 && nums[j] == nums[j - 1]) continue;    // avoid the duplicates while moving j
-
-            int k = j + 1;                      
-            int l = n - 1;
-            while (k < l) {
-                long long sum = nums[i];
-                sum += nums[j];
-                sum += nums[k];
-                sum += nums[l];
-
-                if (sum == target) {
-                    vector<int> temp = {nums[i], nums[j], nums[k], nums[l]};
-                    ans.push_back(temp);
-                    k++; l--;
-
-                    //skip the duplicates:
-                    while (k < l && nums[k] == nums[k - 1]) k++;
-                    while (k < l && nums[l] == nums[l + 1]) l--;
-                }
-                else if (sum < target) k++;
-                else l--;
-            }
+    while(right<n){
+        while(left <= right && sum > k){
+            sum -= nums[left];
+            left++;
         }
+        if(sum == k){
+            maxLen = max(maxLen, right - left + 1);
+        }
+        right++;
+        if(right < n)   sum += nums[right];
     }
-    return ans;
+    return maxLen;
 }
 
 int main(){
 
-  vector<int> nums = {1,0,-1,0,-2,2};
-  int target = 0;
+  vector<int> nums = {1,2,3};        
+  int k = 3; 
 
   //* Brute force approach
-  // Steps:-
-    // 1) Iterate through array using four loops because we need four values right.
-    // 2) Now store all the four elements in long long sum variable
-    // 2) check if the sum is equivalent to the target, if yes store in temporary array;
-    // 3) Now we need to sort the array (to handle duplicates);
-    // 4) To deal with duplicates, we will send all values to "set" data structure
-    // 5) At the end we will create a vector which we want to return and transfer all the set values into ans vector.
-    //* T.C ==> O(n^4), S.C ==> O(2N)
-
+  
+  // In the brute force approach, we will be run 1 loop called i from 0 to n
+  // Second loop j will be from i to n
+  // Inside second loop we will initialize sum variable with 0
+  // Now we will add arr[k] in the sum variable and we need to check if sum == k?
+  // If we get any sum, compare it with previous length and get the maximum one
+  //* T.C ==> O(n^2)      S.C ==> O(1)
 
 //* -------------------------------------------------------
 
   //* Better approach 
 
-  // Better approach would be as same as 3sum problem - using hashSet
-
-  //* T.C ==> O(n^3 * logM), S.C ==> O(2N)
-
+  // Better approach taught by striver is capable for both positives and negatives, but its super hard
 
 //* -------------------------------------------------------
-
+ 
   //* Optimal approach 
 
-  vector<vector<int>> output = Optimal(nums, target);
+  int output = subarraySum(nums, k);
+  cout<<output;
 
-  for(auto row: output){
-    for(auto col: row){
-      cout<<col<<", ";
-    }
-    cout<<endl;
-  }
+  //* T.C ==> O(2N)     S.C ==> O(1) 
 
-  //* T.C ==> O(n^3) + O(MxN),   -- MxN bcoz we running 2 while loops
-  //* S.C ==> O(1)
 
 }
